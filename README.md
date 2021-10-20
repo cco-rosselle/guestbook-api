@@ -1,6 +1,6 @@
 # guestbook-api
 
-A dummy "guestbook" api to learn GoLang and Hexagonal architecture (and eventually all things backend). Currently only has two routes:
+A super basic/naive api that adds comments to a "guestbook" to ultimately learn GoLang and Hexagonal architecture (and eventually all things backend). Currently only has two routes:
 
 1. `GET - /v1/comments`
 2. `POST - /v1/comments`
@@ -19,3 +19,4 @@ GO_ENV=local go run cmd/server.go
 - Add validation to see if the request body has the right stuff
 - Docker
 - Start Postgres server at boot
+- Scrap the db schema from Postgres and create one from code 
