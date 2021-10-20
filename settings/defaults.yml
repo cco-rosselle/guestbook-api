@@ -1,0 +1,16 @@
+data:
+  cluster:
+  database: guestbook-db
+  defaultLimit: 100
+  host: localhost:5432
+  maxLimit: 500
+  query: 
+  pass:
+  protocol: postgresql
+  timeoutSeconds: 10
+  user:
+logging:
+  level: info
+name: guestbook-api
+server:
+  address: "0.0.0.0:8080"
