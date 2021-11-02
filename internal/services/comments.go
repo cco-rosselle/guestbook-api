@@ -1,6 +1,7 @@
 package services
 
 import (
+	"home/zellie/Code/guestbook-api/internal/interfaces"
 	"home/zellie/Code/guestbook-api/internal/models"
 	"home/zellie/Code/guestbook-api/internal/repos"
 	"github.com/google/uuid"
@@ -9,14 +10,14 @@ import (
 	
 )
 
-type CommentsService struct {
+type commentsService struct {
 	log zerolog.Logger
 	repo *repos.CommentsRepo
 }
 
 // creates an instance of CommentsService 
-func NewCommentsService(repo *repos.CommentsRepo) *CommentsService {
-	return &CommentsService {
+func NewCommentsService(repo *repos.CommentsRepo) interfaces.CommentsService {
+	return &commentsService {
 		log: log.With().
 			Str("component", "services.commentsService").
 			Logger(),
@@ -25,12 +26,12 @@ func NewCommentsService(repo *repos.CommentsRepo) *CommentsService {
 }
 
 
-func (cs CommentsService) TestServiceFunc() error {
+func (cs commentsService) TestServiceFunc() error {
 	cs.log.Trace().Msg("test comment services function was reached")
 	return nil
 }
 
-func (cs CommentsService) PostComment(body *models.Comment) error {
+func (cs commentsService) PostComment(body *models.Comment) error {
 	cs.log.Trace().Msg("attempting to post comment")
 
 	// validate if there's a description
@@ -50,7 +51,7 @@ func (cs CommentsService) PostComment(body *models.Comment) error {
 	return nil
 }
 
-func (cs CommentsService) GetAllComments() (*models.Comments, error) {
+func (cs commentsService) GetAllComments() (*models.Comments, error) {
 	cs.log.Trace().Msg("getting all comments")
 
 	comments, err := cs.repo.GetAllComments()
@@ -68,7 +69,7 @@ func (cs CommentsService) GetAllComments() (*models.Comments, error) {
 	return comments, nil
 }
 
-func (cs CommentsService) setCommentId(body *models.Comment) {
+func (cs commentsService) setCommentId(body *models.Comment) {
 	body.CommentID = uuid.NewString()
 }
 

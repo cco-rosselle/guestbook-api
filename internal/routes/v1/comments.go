@@ -5,7 +5,6 @@ import (
 
 	"home/zellie/Code/guestbook-api/internal/interfaces"
 	"home/zellie/Code/guestbook-api/internal/models"
-	"home/zellie/Code/guestbook-api/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
@@ -14,11 +13,11 @@ import (
 
 type commentsApi struct {
 	log zerolog.Logger
-	commentsService *services.CommentsService
+	commentsService interfaces.CommentsService
 }
 
 // returns a new controller CommentsApi for interacting with CommentsService
-func NewCommentsApi(cs *services.CommentsService) interfaces.CommentsApi {
+func NewCommentsApi(cs interfaces.CommentsService) interfaces.CommentsApi {
 	return &commentsApi {
 		log: log.With().
 			Str("package", "v1").

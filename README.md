@@ -7,7 +7,14 @@ A super basic/naive api that adds comments to a "guestbook" to ultimately learn 
 
 ## Running Locally
 
-...I committed the `local.yml` file. Still trying to understand settings... But this command  still probably won't work actually. Unless there's already an existing Postgres server on your local machine haha and you change the Postgres config. Whoops. 
+To run the repo locally, you can create a ```local.yml``` file with the following settings (note: more relevant settings soon):
+
+```yml
+logging:
+  level: debug
+```
+
+And then you can run this:
 
 ```bash
 GO_ENV=local go run cmd/server.go
@@ -21,5 +28,4 @@ GO_ENV=local go run cmd/server.go
 - Start Postgres server at boot
 - Scrap the db schema from Postgres and create one from code 
 - Unit tests
-- Implement interfaces for service layer
 - Find one and delete

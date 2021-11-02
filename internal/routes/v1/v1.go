@@ -2,13 +2,13 @@
 package v1
 
 import (
-	"home/zellie/Code/guestbook-api/internal/services"
+	"home/zellie/Code/guestbook-api/internal/interfaces"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )
 
-func Register(r *gin.Engine, cs *services.CommentsService) {
+func Register(r *gin.Engine, cs interfaces.CommentsService) {
 	v1 := r.Group("/v1")
 
 	commentsApi := NewCommentsApi(cs)
