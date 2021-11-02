@@ -20,3 +20,6 @@ GO_ENV=local go run cmd/server.go
 - Docker
 - Start Postgres server at boot
 - Scrap the db schema from Postgres and create one from code 
+- Unit tests
+- Implement interfaces for service layer
+- Find one and delete
