@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"home/zellie/Code/guestbook-api/internal/interfaces"
 	"home/zellie/Code/guestbook-api/internal/models"
 
 	"github.com/rs/zerolog"
@@ -8,25 +9,25 @@ import (
 )
 
 
-type CommentsRepo struct {
+type commentsRepo struct {
 	log zerolog.Logger
 	pc *PostgresRepo
 }
 
-func NewCommentsRepo() (*CommentsRepo, error) {
+func NewCommentsRepo() (interfaces.CommentsRepo, error) {
 	repo, err := newPostgresRepo()
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &CommentsRepo {
+	return &commentsRepo {
 		log: repo.log,
 		pc: repo,
 	}, nil
 }
 
-func (cr CommentsRepo) InsertComment(c *models.Comment) error {
+func (cr commentsRepo) InsertComment(c *models.Comment) error {
 	ctx, cancel := getContext()
 	defer cancel()
 
@@ -51,7 +52,7 @@ func (cr CommentsRepo) InsertComment(c *models.Comment) error {
 	return nil
 }
 
-func (cr CommentsRepo) GetAllComments() (*models.Comments, error) {
+func (cr commentsRepo) GetAllComments() (*models.Comments, error) {
 	cr.log.Trace().Msg("beginning to get all comments")
 
 	comments := &models.Comments{

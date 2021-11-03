@@ -4,8 +4,7 @@ import (
 	"home/zellie/Code/guestbook-api/internal/models"
 )
 
-type CommentsService interface {
-	TestServiceFunc() error
-	InsertComment(*models.Comment) error
+type CommentsRepo interface {
+	InsertComment(c *models.Comment) error
 	GetAllComments() (*models.Comments, error)
 }

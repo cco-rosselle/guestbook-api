@@ -3,7 +3,6 @@ package services
 import (
 	"home/zellie/Code/guestbook-api/internal/interfaces"
 	"home/zellie/Code/guestbook-api/internal/models"
-	"home/zellie/Code/guestbook-api/internal/repos"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -12,11 +11,11 @@ import (
 
 type commentsService struct {
 	log zerolog.Logger
-	repo *repos.CommentsRepo
+	repo interfaces.CommentsRepo
 }
 
 // creates an instance of CommentsService 
-func NewCommentsService(repo *repos.CommentsRepo) interfaces.CommentsService {
+func NewCommentsService(repo interfaces.CommentsRepo) interfaces.CommentsService {
 	return &commentsService {
 		log: log.With().
 			Str("component", "services.commentsService").
@@ -31,7 +30,7 @@ func (cs commentsService) TestServiceFunc() error {
 	return nil
 }
 
-func (cs commentsService) PostComment(body *models.Comment) error {
+func (cs commentsService) InsertComment(body *models.Comment) error {
 	cs.log.Trace().Msg("attempting to post comment")
 
 	// validate if there's a description

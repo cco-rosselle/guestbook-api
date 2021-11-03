@@ -54,7 +54,7 @@ func (ca commentsApi) PostComment(ctx *gin.Context) {
 		return
 	}
 
-	if err := ca.commentsService.PostComment(body); err != nil {
+	if err := ca.commentsService.InsertComment(body); err != nil {
 		ctx.Error(err)
 		ctx.Abort()
 		return	
