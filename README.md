@@ -1,6 +1,6 @@
 # guestbook-api
 
-A super basic/naive api that adds comments to a "guestbook" to ultimately learn GoLang and Hexagonal architecture (and eventually all things backend). Currently only has two routes:
+A super basic/naive api that adds comments to a "guestbook" to ultimately learn GoLang and Hexagonal architecture (and eventually all things backend). Currently only has 3 routes:
 
 1. `GET - /v1/comments`
 2. `POST - /v1/comments`
