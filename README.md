@@ -4,6 +4,7 @@ A super basic/naive api that adds comments to a "guestbook" to ultimately learn 
 
 1. `GET - /v1/comments`
 2. `POST - /v1/comments`
+3. `DELETE - /v1/comments/:commentid`
 
 ## Running Locally
 
