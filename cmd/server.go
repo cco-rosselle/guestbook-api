@@ -1,10 +1,10 @@
 package main
 
 import (
+	"home/zellie/Code/guestbook-api/internal/repos"
 	"home/zellie/Code/guestbook-api/internal/routes"
 	"home/zellie/Code/guestbook-api/internal/services"
 	"home/zellie/Code/guestbook-api/internal/settings"
-	"home/zellie/Code/guestbook-api/internal/repos"
 
 	ginzerolog "github.com/dn365/gin-zerolog"
 	"github.com/gin-gonic/gin"
@@ -32,7 +32,7 @@ func configureLogger() {
 			Str("package", "main").
 			Str("logging.level", level).
 			Msg("logging.level is not a known value")
-		
+
 		zerolog.SetGlobalLevel(zerolog.TraceLevel)
 	}
 
@@ -75,7 +75,7 @@ func main() {
 	cr, err := repos.NewCommentsRepo()
 	if err != nil {
 		log.Fatal().
-			Str("package","main").
+			Str("package", "main").
 			Err(err).Msg("unable to create comments repo")
 		return
 	}
@@ -83,7 +83,12 @@ func main() {
 	// TODO: create/initialize token handler
 
 	// initialize services
-	cs := services.NewCommentsService(cr) // doesn't take anything yet
+	cs, err := services.NewCommentsService(cr) // doesn't take anything yet
+	if err != nil {
+		log.Fatal().
+			Str("package", "main").
+			Err(err).Msg("unable to create comments service")
+	}
 
 	// intialize api controllers
 	routes.Register(r, cs)

@@ -8,4 +8,5 @@ type CommentsService interface {
 	TestServiceFunc() error
 	InsertComment(*models.Comment) error
 	GetAllComments() (*models.Comments, error)
+	DeleteComment(string) error
 }

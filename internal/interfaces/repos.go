@@ -7,4 +7,5 @@ import (
 type CommentsRepo interface {
 	InsertComment(c *models.Comment) error
 	GetAllComments() (*models.Comments, error)
+	DeleteComment(cid string) error
 }

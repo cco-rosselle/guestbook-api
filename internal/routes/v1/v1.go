@@ -18,4 +18,5 @@ func Register(r *gin.Engine, cs interfaces.CommentsService) {
 	v1.GET("/test", commentsApi.TestApiFunc)
 	v1.POST("/comments", commentsApi.PostComment)
 	v1.GET("/comments", commentsApi.GetAll)
+	v1.DELETE("/comments/:commentid", commentsApi.RemoveComment)
 }

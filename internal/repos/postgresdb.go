@@ -2,20 +2,22 @@ package repos
 
 import (
 	"database/sql"
+	"home/zellie/Code/guestbook-api/internal/settings"
+
 	_ "github.com/lib/pq"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
 type PostgresRepo struct {
-	log zerolog.Logger
+	log  zerolog.Logger
 	pool *sql.DB
 }
 
 func newPostgresRepo() (*PostgresRepo, error) {
-	//s := settings.Default()
+	s := settings.Default()
 
-	connection := "user=postgres dbname=guestbook-db password=123 host=localhost sslmode=disable"
+	connection := "user=" + s.Data.User + " dbname=" + s.Data.Database + " password=" + s.Data.Pass + " host=localhost sslmode=disable"
 
 	_, cancel := getContext()
 	defer cancel()
@@ -32,10 +34,10 @@ func newPostgresRepo() (*PostgresRepo, error) {
 
 	log.Trace().Msg("connected to postgres cluster")
 
-	return &PostgresRepo {
+	return &PostgresRepo{
 		log: log.With().
 			Str("package", "repos").
 			Logger(),
 		pool: db,
 	}, nil
-} 
+}

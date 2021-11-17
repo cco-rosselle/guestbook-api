@@ -12,13 +12,13 @@ import (
 )
 
 type commentsApi struct {
-	log zerolog.Logger
+	log             zerolog.Logger
 	commentsService interfaces.CommentsService
 }
 
 // returns a new controller CommentsApi for interacting with CommentsService
 func NewCommentsApi(cs interfaces.CommentsService) interfaces.CommentsApi {
-	return &commentsApi {
+	return &commentsApi{
 		log: log.With().
 			Str("package", "v1").
 			Str("component", "comments api controller").
@@ -57,22 +57,34 @@ func (ca commentsApi) PostComment(ctx *gin.Context) {
 	if err := ca.commentsService.InsertComment(body); err != nil {
 		ctx.Error(err)
 		ctx.Abort()
-		return	
+		return
 	}
 
 	ctx.JSON(http.StatusCreated, body)
 }
 
-
 func (ca commentsApi) GetAll(ctx *gin.Context) {
 	ca.log.Debug().Msg("get all comments request received")
-	
+
 	comments, err := ca.commentsService.GetAllComments()
 	if err != nil {
 		ctx.Error(err)
 		ctx.Abort()
 		return
-	} 
+	}
 
 	ctx.JSON(http.StatusOK, comments)
+}
+
+func (ca commentsApi) RemoveComment(ctx *gin.Context) {
+	ca.log.Debug().Msg("delete comment request received")
+
+	err := ca.commentsService.DeleteComment(ctx.Param("commentid"))
+	if err != nil {
+		ctx.Error(err)
+		ctx.Abort()
+		return
+	}
+
+	ctx.JSON(http.StatusNoContent, nil)
 }

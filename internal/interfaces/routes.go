@@ -8,4 +8,5 @@ type CommentsApi interface {
 	TestApiFunc(*gin.Context)
 	PostComment(*gin.Context)
 	GetAll(*gin.Context)
+	RemoveComment(*gin.Context)
 }

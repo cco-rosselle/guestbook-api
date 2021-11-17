@@ -1,17 +1,17 @@
 package repos
 
 import (
+	"database/sql"
 	"home/zellie/Code/guestbook-api/internal/interfaces"
 	"home/zellie/Code/guestbook-api/internal/models"
 
-	"github.com/rs/zerolog"
 	_ "github.com/lib/pq"
+	"github.com/rs/zerolog"
 )
-
 
 type commentsRepo struct {
 	log zerolog.Logger
-	pc *PostgresRepo
+	pc  *PostgresRepo
 }
 
 func NewCommentsRepo() (interfaces.CommentsRepo, error) {
@@ -21,9 +21,9 @@ func NewCommentsRepo() (interfaces.CommentsRepo, error) {
 		return nil, err
 	}
 
-	return &commentsRepo {
+	return &commentsRepo{
 		log: repo.log,
-		pc: repo,
+		pc:  repo,
 	}, nil
 }
 
@@ -93,6 +93,61 @@ func (cr commentsRepo) GetAllComments() (*models.Comments, error) {
 	comments.Total = total
 
 	cr.log.Debug().Msg("getting all comments successful")
-	
+
 	return comments, nil
+}
+
+func (cr commentsRepo) DeleteComment(cid string) error {
+	ctx, cancel := getContext()
+	defer cancel()
+
+	if found, err := cr.findComment(cid); !found {
+		cr.log.Debug().Msg("error while searching commentId")
+		return err
+	}
+
+	deleteStr := `delete from comments where commentid = $1`
+
+	_, err := cr.pc.pool.ExecContext(ctx, deleteStr, cid)
+	if err != nil {
+		cr.log.Error().
+			Stack().
+			Err(err).
+			Str("commentId", cid).
+			Msg("issue deleting commentId")
+		return err
+	}
+
+	cr.log.Debug().
+		Str("commentId", cid).
+		Msg("comment deleted")
+
+	return nil
+}
+
+func (cr commentsRepo) findComment(cid string) (bool, error) {
+	ctx, cancel := getContext()
+	defer cancel()
+
+	findStr := `select commentid, description from comments where commentid = $1`
+
+	_, err := cr.pc.pool.QueryContext(ctx, findStr, cid)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			cr.log.Error().
+				Stack().
+				Err(err).
+				Str("commentId", cid).
+				Msg("cannot find commentId")
+		}
+
+		cr.log.Error().
+			Stack().
+			Err(err).
+			Str("commentId", cid).
+			Msg("issue finding commentId")
+
+		return false, err
+	}
+	return true, nil
 }

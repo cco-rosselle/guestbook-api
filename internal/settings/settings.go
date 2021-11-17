@@ -40,7 +40,7 @@ func (s Settings) MarshalZerologObject(e *zerolog.Event) {
 		Str("data.host", s.Data.Host).
 		Str("data.query", s.Data.Query).
 		Int("data.maxLimit", s.Data.MaxLimit).
-		Str("data.pass", s.Data.Pass).
+		Str("data.pass", "sensitive").
 		Str("data.protocol", s.Data.Protocol).
 		Int("data.timeoutSeconds", s.Data.TimeoutSeconds).
 		Str("data.user", s.Data.User).
