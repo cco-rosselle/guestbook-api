@@ -9,14 +9,14 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-type GuestbookCommentsService struct {
+type commentsService struct {
 	log  zerolog.Logger
 	repo interfaces.CommentsRepo
 }
 
 // creates an instance of CommentsService
-func NewCommentsService(repo interfaces.CommentsRepo) (*GuestbookCommentsService, error) {
-	return &GuestbookCommentsService{
+func NewCommentsService(repo interfaces.CommentsRepo) (*commentsService, error) {
+	return &commentsService{
 		log: log.With().
 			Str("component", "services.commentsService").
 			Logger(),
@@ -24,12 +24,12 @@ func NewCommentsService(repo interfaces.CommentsRepo) (*GuestbookCommentsService
 	}, nil
 }
 
-func (cs GuestbookCommentsService) TestServiceFunc() error {
+func (cs commentsService) TestServiceFunc() error {
 	cs.log.Trace().Msg("test comment services function was reached")
 	return nil
 }
 
-func (cs GuestbookCommentsService) InsertComment(body *models.Comment) error {
+func (cs commentsService) InsertComment(body *models.Comment) error {
 	cs.log.Trace().Msg("attempting to post comment")
 
 	// validate if there's a description
@@ -49,7 +49,7 @@ func (cs GuestbookCommentsService) InsertComment(body *models.Comment) error {
 	return nil
 }
 
-func (cs GuestbookCommentsService) GetAllComments() (*models.Comments, error) {
+func (cs commentsService) GetAllComments() (*models.Comments, error) {
 	cs.log.Trace().Msg("getting all comments")
 
 	comments, err := cs.repo.GetAllComments()
@@ -67,11 +67,11 @@ func (cs GuestbookCommentsService) GetAllComments() (*models.Comments, error) {
 	return comments, nil
 }
 
-func (cs GuestbookCommentsService) setCommentId(body *models.Comment) {
+func (cs commentsService) setCommentId(body *models.Comment) {
 	body.CommentID = uuid.NewString()
 }
 
-func (cs GuestbookCommentsService) DeleteComment(cid string) error {
+func (cs commentsService) DeleteComment(cid string) error {
 	cs.log.Trace().Msg("attempting to delete a comment")
 
 	err := cs.repo.DeleteComment(cid)
