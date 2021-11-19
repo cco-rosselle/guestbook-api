@@ -32,11 +32,18 @@ func (cs commentsService) TestServiceFunc() error {
 func (cs commentsService) InsertComment(body *models.Comment) error {
 	cs.log.Trace().Msg("attempting to post comment")
 
-	// validate if there's a description
+	if err := cs.validateBody(body); err != nil {
+		cs.log.Error().
+			Stack().
+			Err(err).
+			Msg("comment not posted")
+		return err
+	}
 
 	cs.setCommentId(body)
 
-	if err := cs.repo.InsertComment(body); err != nil {
+	err := cs.repo.InsertComment(body)
+	if err != nil {
 		cs.log.Error().
 			Stack().
 			Err(err).
@@ -84,5 +91,12 @@ func (cs commentsService) DeleteComment(cid string) error {
 	}
 
 	cs.log.Debug().Msg("comment successfully deleted")
+	return nil
+}
+
+func (cs commentsService) validateBody(body *models.Comment) error {
+	if body == nil || body.Description == "" {
+		return models.BadRequestError("comment description required but was empty")
+	}
 	return nil
 }

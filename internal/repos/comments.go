@@ -2,7 +2,6 @@ package repos
 
 import (
 	"database/sql"
-	"home/zellie/Code/guestbook-api/internal/interfaces"
 	"home/zellie/Code/guestbook-api/internal/models"
 
 	_ "github.com/lib/pq"
@@ -14,7 +13,7 @@ type commentsRepo struct {
 	pc  *PostgresRepo
 }
 
-func NewCommentsRepo() (interfaces.CommentsRepo, error) {
+func NewCommentsRepo() (*commentsRepo, error) {
 	repo, err := newPostgresRepo()
 
 	if err != nil {
@@ -70,7 +69,7 @@ func (cr commentsRepo) GetAllComments() (*models.Comments, error) {
 			Stack().
 			Err(err).
 			Msg("issue getting all rows of comments")
-		return comments, err
+		return nil, err
 	}
 
 	var total int
@@ -84,7 +83,7 @@ func (cr commentsRepo) GetAllComments() (*models.Comments, error) {
 				Stack().
 				Err(err).
 				Msg("row doesn't have the correct column data?")
-			return comments, err
+			return nil, err
 		}
 		total = total + 1
 		comments.Data = append(comments.Data, comment)

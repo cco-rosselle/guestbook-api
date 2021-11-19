@@ -88,6 +88,7 @@ func main() {
 		log.Fatal().
 			Str("package", "main").
 			Err(err).Msg("unable to create comments service")
+		return
 	}
 
 	// intialize api controllers
